@@ -1,26 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
+import React,{ Component } from 'react';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {connect} from 'react-redux'
+import * as userActions from './actions/user'
+
+
+
+
+class App extends  Component{
+constructor(){
+    super()
+    this.state = {
+        status:true
+    }
+}
+    goParent(){
+        // Route.push('/parent')
+    }
+    login(){
+        //触发action更新
+        this.props.dispatch(userActions.login({
+            accout:'123',
+            name:'wulei',
+            password:'123'
+        }))
+    }
+    render(){
+
+        const {user} = this.props;
+        return (
+
+                <div className="App">
+                    <div>{user.isLogin?'欢迎你':'未登录'}</div>
+                    <div onClick={this.login.bind(this)}>点击</div>
+
+                </div>
+
+
+
+
+        );
+    }
 }
 
-export default App;
+
+//拿仓库里面的信息
+
+export default connect((state) =>{
+    return{
+        user:state.user
+    }
+})(App);
